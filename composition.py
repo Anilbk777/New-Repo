@@ -33,7 +33,7 @@ class OrderItem:
         self.quantity = quantity
 
     def get_total(self):
-        return {self.price} * {self.quantity}
+        return self.price * self.quantity
 
 
 class OrderSummary:
@@ -41,7 +41,7 @@ class OrderSummary:
         self.items = items
 
     def calculate_total(self, tax_percent=5, discount=0):
-        subtotal = sum(self.item.price * self.item.quantity for item in self.items )
+        subtotal = sum(item.get_total() for item in self.items )
         tax =subtotal * tax_percent / 100
         final_total = subtotal + tax - discount
 
@@ -56,8 +56,8 @@ class OrderSummary:
 
 class Order:
     def __init__(self):
-        self.customer = CustomreInfo(self.customer_name, self.email, self.phone)
-        self.address = ShippingAddress()
+        self.customer = CustomreInfo("Anil", "anil@gmail.com", "9812345670")
+        self.address = ShippingAddress("17 street","Pokhara","Nepal")
         self.payment = PaymentDetails()
         self.items = []
         self.summary = OrderSummary(self.items)
@@ -68,3 +68,15 @@ class Order:
 
     def get_summary(self):
         return self.summary.calculate_total()
+
+
+
+order = Order()
+order.add_item("laptop",80000,1)
+order.add_item("mouse",500, 2)
+
+summary = order.get_summary()
+print(summary)
+
+order.payment.cash()
+order.payment.status("Paid")
