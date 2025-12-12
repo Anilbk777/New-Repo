@@ -55,9 +55,9 @@ class OrderSummary:
 
 
 class Order:
-    def __init__(self):
-        self.customer = CustomreInfo("Anil", "anil@gmail.com", "9812345670")
-        self.address = ShippingAddress("17 street","Pokhara","Nepal")
+    def __init__(self,customer_name, email, phn, street, city, country):
+        self.customer = CustomreInfo(customer_name, email , phn)
+        self.address = ShippingAddress(street, city, country)
         self.payment = PaymentDetails()
         self.items = []
         self.summary = OrderSummary(self.items)
@@ -70,10 +70,27 @@ class Order:
         return self.summary.calculate_total()
 
 
+sett = ["Name", "Email", "Phone", "Street","city", "country"]
+new_lst = []
+for i in sett:
+    inputt = input(f"Enter {i}: ")
+    new_lst.append(inputt)
 
-order = Order()
-order.add_item("laptop",80000,1)
-order.add_item("mouse",500, 2)
+order = Order(
+    new_lst[0],
+    new_lst[1],
+    new_lst[2],
+    new_lst[3],
+    new_lst[4],
+    new_lst[5]
+)
+
+
+product_name = input("Product Name: ")
+price = float(input("Price: "))
+quantity = int(input("Quantity: "))
+
+order.add_item(product_name,price,quantity)
 
 summary = order.get_summary()
 print(summary)
