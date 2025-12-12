@@ -61,3 +61,10 @@ class Order:
         self.payment = PaymentDetails()
         self.items = []
         self.summary = OrderSummary(self.items)
+
+    def add_item(self, name, price, quantity):
+        item = OrderItem(name, price, quantity)
+        self.items.append(item)
+
+    def get_summary(self):
+        return self.summary.calculate_total()
