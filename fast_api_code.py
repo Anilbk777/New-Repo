@@ -30,7 +30,15 @@ def create_user(user1:dict):
 
     except:
         return {"error":"Invalid user"}
-
+    
+@app.post("/delete/{id}")
+def delete_user(id:int):
+    if id is None:
+        return {"message":"Provide user id too"}
+    for user in users:
+        if user["roll no"] == id:
+            return users.pop(user)
+        
 if __name__ == "__main__":
     uvicorn.run("app:app", reload=True)
 
