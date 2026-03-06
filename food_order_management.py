@@ -39,6 +39,7 @@ if __name__ == "__main__":
     order1.add_item("Garlic Bread", 4.99)
     order1.add_item("Coke", 2.49)
     order1.place_order()
+    order1.add_item("roti","20")
 
     order2 = FoodOrder("ORD-102", "Bob")
     order2.add_item("Burger", 9.99)
