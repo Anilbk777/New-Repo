@@ -10,14 +10,14 @@ class User:
 
   def follow(self, user:User):
     if user in self.following:
-      raise ValueError("User is already in following list")
+      raise ValueError(f"{self.name} is already following {user.name}.")
 
-    if user == self:
+    if user is self:
       raise ValueError("You can't follow yourself.")
 
     self.following.append(user)
     user.followers.append(self)
-
+    
   def send_message(self, recipient: User, content: str, timestamp: str):
     msg = Message(sender=self, recipient=recipient, content=content, timestamp=timestamp)
     self.messages.append(msg)          
