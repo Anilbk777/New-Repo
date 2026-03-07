@@ -93,8 +93,5 @@ if __name__ == "__main__":
   order.update_quantity("USB-C Cable", 5)
   order.remove_item("Laptop Stand")
 
-  print("\nAfter update:")
-  order.print_receipt()
-
-
+  
 
