@@ -10,3 +10,8 @@ class TaxCalculator(ABC):
 class USTaxCalculator(TaxCalculator):
     def calculate_tax(self, amount: float) -> float:
         return 0.10 * amount
+
+
+class EUTaxCalculator(TaxCalculator):
+    def calculate_tax(self, amount: float) -> float:
+        return 0.20 * amount
