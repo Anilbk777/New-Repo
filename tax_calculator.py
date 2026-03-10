@@ -37,3 +37,12 @@ class OrderProcessor:
         tax = self._tax_calculator.calculate_tax(amount)
         total = amount + tax
         return {"tax": tax, "total": total}
+
+
+if __name__ == "__main__":
+
+    us_order_processr = OrderProcessor("US", USTaxCalculator())
+    us_order_processr.process_order(100.00)
+
+    uk_order_processr = OrderProcessor("UK", UKTaxCalculator())
+    uk_order_processr.process_order(100.00)
