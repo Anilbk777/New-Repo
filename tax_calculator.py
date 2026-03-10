@@ -20,3 +20,20 @@ class EUTaxCalculator(TaxCalculator):
 class UKTaxCalculator(TaxCalculator):
     def calculate_tax(self, amount: float) -> float:
         return 0.15 * amount
+
+
+class OrderProcessor:
+    def __init__(self, region: str, tax_calculator: TaxCalculator):
+        self._region = region
+        self._tax_calculator = tax_calculator
+
+    def process_order(self, amount: float) -> None:
+        data = self.__calculation(amount)
+        print(
+            f"[{self._region} Order] -> Subtotal: {amount:.2f}, Tax: {data["tax"]:.2f}, Total: {data["total"]:.2f}"
+        )
+
+    def __calculation(self, amount: float) -> dict[str, float]:
+        tax = self._tax_calculator.calculate_tax(amount)
+        total = amount + tax
+        return {"tax": tax, "total": total}
