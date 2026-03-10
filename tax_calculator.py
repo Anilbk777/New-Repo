@@ -15,3 +15,8 @@ class USTaxCalculator(TaxCalculator):
 class EUTaxCalculator(TaxCalculator):
     def calculate_tax(self, amount: float) -> float:
         return 0.20 * amount
+
+
+class UKTaxCalculator(TaxCalculator):
+    def calculate_tax(self, amount: float) -> float:
+        return 0.15 * amount
