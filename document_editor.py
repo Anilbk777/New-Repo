@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 class DocumentEditor:
     def __init__(self):
         self.render_document:str = None
@@ -18,3 +21,16 @@ class DocumentEditor:
                     self.render_document += i + "\n"
 
         return self.render_document
+    
+    def save_to_file(self, path:str):
+        if Path(path).exists():
+            with open(path, "a") as f:
+                if self.render_document is not None:
+                    f.write(self.render_document)
+                else:
+                    print("No document to add in the file.")
+        else:
+            print(f"The path doesn't exist. {Path(path)}")
+
+
+
