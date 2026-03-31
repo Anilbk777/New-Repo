@@ -1,25 +1,3 @@
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
-this one is another text
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
-Hello guys
-[profile.img]
-I am from pokhara.
-[house.img]
+Hello world
+[Image: profile.png]
+I love python programming.

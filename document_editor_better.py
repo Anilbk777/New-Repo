@@ -102,4 +102,11 @@ if __name__ == "__main__":
     doc_editor.add_new_line()
     doc_editor.add_text("I love python programming.")
 
+    doc_render = DocumentRender(doc_obj)
+    data = doc_render.render()
+    print(data)
+
+    doc_editor.save(data)
+    doc_editor.add_text("this is new line to document.")
+
     
