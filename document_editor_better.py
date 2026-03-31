@@ -26,9 +26,14 @@ class ImageElement(DocumentElement):
         return "[Image: " + self.path + "]"
 
 
+class NewLineELement(DocumentElement):
+    def render(self):
+        return "\n"
+
+
 class Persistance(ABC):
     @abstractmethod
-    def save(self):
+    def save(self, content: str):
         pass
 
 
@@ -36,6 +41,7 @@ class SaveToFile(Persistance):
     def save(self, content: str):
         with open("document.txt", "w") as f:
             f.write(content)
+            print("data saved in document.txt successfylly")
 
 
 class SaveToDB(Persistance):
@@ -60,8 +66,11 @@ class DocumentRender:
 
     def render(self):
         elements = self.doc.get_element()
+        result = ""
         for element in elements:
-            print(element.render())
+            result += element.render()
+
+        return result
 
 
 class DocumentEditor:
@@ -70,4 +79,10 @@ class DocumentEditor:
         self.db = db
 
     def add_text(self, text: str):
-        self.doc.add_element(TextElement())
+        self.doc.add_element(TextElement(text))
+
+    def add_image(self, path: str):
+        self.doc.add_element(ImageElement(path))
+
+    def save(self, content: str):
+        self.db.save(content)
