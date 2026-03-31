@@ -109,4 +109,6 @@ if __name__ == "__main__":
     doc_editor.save(data)
     doc_editor.add_text("this is new line to document.")
 
+    data2 = doc_render.render()
+    print(data2)
     
