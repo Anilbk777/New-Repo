@@ -13,7 +13,7 @@ class TextElement(DocumentElement):
     def __init__(self, text: str):
         self.text = text
 
-    def render(self):
+    def render(self) -> str:
         return self.text
 
 
@@ -22,7 +22,7 @@ class ImageElement(DocumentElement):
     def __init__(self, path: str):
         self.path = path
 
-    def render(self):
+    def render(self) -> str:
         return "[Image: " + self.path + "]"
 
 
@@ -31,84 +31,81 @@ class NewLineELement(DocumentElement):
         return "\n"
 
 
-class Persistance(ABC):
+class Persistence(ABC):
     @abstractmethod
     def save(self, content: str):
         pass
 
+class SaveToFile(Persistence):
 
-class SaveToFile(Persistance):
+    def __init__(self, path:str):
+        self.path = path
+        
     def save(self, content: str):
-        with open("document.txt", "w") as f:
-            f.write(content)
-            print("data saved in document.txt successfylly")
+        try:
+            with open(self.path, "w") as f:
+                f.write(content)
+            print(f"Successfully Saved to {self.path}")
 
+        except IOError as e:
+            print(f"Error: {e}")
+            raise
 
-class SaveToDB(Persistance):
-    def save(self):
-        print("save to my database.")
+class SaveToDB(Persistence):
+    def save(self, content: str) -> None:
+        # Implement properly
+        pass
 
 
 class Document:
-    def __init__(self):
-        self.elements: list[DocumentElement] = []
+    def __init__(self, title:str = "Untitled"):
+        self._elements: list[DocumentElement] = []
 
-    def add_element(self, el: DocumentElement):
-        self.elements.append(el)
+    def add_element(self, element: DocumentElement):
+        if not isinstance(element, DocumentElement):
+            raise TypeError(f"{element} is not a type of DocumentELement")
+        
+        self._elements.append(element)
 
-    def get_element(self):
-        return self.elements
+    def get_elements(self) -> list[DocumentElement]:
+        return self._elements.copy()
 
 
-class DocumentRender:
+class DocumentRenderer:
     def __init__(self, doc: Document):
         self.doc = doc
 
     def render(self):
-        elements = self.doc.get_element()
-        result = ""
+        elements = self.doc.get_elements()
         for element in elements:
-            result += element.render()
+            result = "".join(element.render())
 
         return result
 
 
 class DocumentEditor:
-    def __init__(self, doc: Document, db: Persistance):
-        self.doc = doc
-        self.db = db
+    def __init__(self, document: Document):
+        self.document = document
 
     def add_text(self, text: str):
-        self.doc.add_element(TextElement(text))
+        self.document.add_element(TextElement(text))
 
     def add_image(self, path: str):
-        self.doc.add_element(ImageElement(path))
+        self.document.add_element(ImageElement(path))
 
     def add_new_line(self):
-        self.doc.add_element(NewLineELement())
-
-    def save(self, content: str):
-        self.db.save(content)
+        self.document.add_element(NewLineELement())
 
 
-if __name__ == "__main__":
-    doc_obj = Document()
-    file_obj = SaveToFile()
+class DocumentService:  
+    def __init__(self, document: Document, persistence: Persistence):
+        self.editor = DocumentEditor(document)
+        self.renderer = DocumentRenderer(document)
+        self.persistence = persistence
 
-    doc_editor = DocumentEditor(doc_obj, file_obj)
-    doc_editor.add_text("Hello world")
-    doc_editor.add_new_line()
-    doc_editor.add_image("profile.png")
-    doc_editor.add_new_line()
-    doc_editor.add_text("I love python programming.")
+    def save_document(self) -> None:
+        content = self.renderer.render()
+        self.persistence.save(content)
 
-    doc_render = DocumentRender(doc_obj)
-    data = doc_render.render()
-    print(data)
 
-    doc_editor.save(data)
-    doc_editor.add_text("this is new line to document.")
 
-    data2 = doc_render.render()
-    print(data2)
-    
