@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class DocumentElement(ABC):
 
     @abstractmethod
-    def render(self):
+    def render(self)->str:
         pass
 
 
@@ -26,8 +26,8 @@ class ImageElement(DocumentElement):
         return "[Image: " + self.path + "]"
 
 
-class NewLineELement(DocumentElement):
-    def render(self):
+class NewLineElement(DocumentElement):
+    def render(self)-> str:
         return "\n"
 
 
@@ -59,6 +59,7 @@ class SaveToDB(Persistence):
 
 class Document:
     def __init__(self, title:str = "Untitled"):
+        self.title = title
         self._elements: list[DocumentElement] = []
 
     def add_element(self, element: DocumentElement):
@@ -72,13 +73,9 @@ class Document:
 
 
 class DocumentRenderer:
-    def __init__(self, doc: Document):
-        self.doc = doc
-
-    def render(self):
-        elements = self.doc.get_elements()
-        for element in elements:
-            result = "".join(element.render())
+ 
+    def render(self , elements:list[DocumentElement]) -> str:
+        result = "".join(element.render() for element in elements)
 
         return result
 
@@ -94,18 +91,25 @@ class DocumentEditor:
         self.document.add_element(ImageElement(path))
 
     def add_new_line(self):
-        self.document.add_element(NewLineELement())
+        self.document.add_element(NewLineElement())
 
 
 class DocumentService:  
-    def __init__(self, document: Document, persistence: Persistence):
-        self.editor = DocumentEditor(document)
-        self.renderer = DocumentRenderer(document)
+    def __init__(self,  
+        document: Document,
+        renderer: DocumentRenderer,
+        persistence: Persistence
+        ):
+
+        self.document = document
+        self.renderer = renderer
         self.persistence = persistence
 
     def save_document(self) -> None:
-        content = self.renderer.render()
+        elements = self.document.get_elements()
+        content = self.renderer.render(elements)
         self.persistence.save(content)
 
+if __name__ == "__main__":
 
-
+  
