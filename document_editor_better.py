@@ -27,3 +27,13 @@ class Document:
 
     def get_element(self):
         return self.elements
+    
+
+class DocumentRender:
+    def __init__(self,doc: Document):
+        self.doc = doc
+    
+    def render(self):
+        elements= self.doc.get_element()
+        for  element in elements:
+            print(element.render())
