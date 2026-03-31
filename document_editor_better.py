@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class DocumentElement(ABC):
 
     @abstractmethod
-    def render(self)->str:
+    def render(self) -> str:
         pass
 
 
@@ -27,7 +27,7 @@ class ImageElement(DocumentElement):
 
 
 class NewLineElement(DocumentElement):
-    def render(self)-> str:
+    def render(self) -> str:
         return "\n"
 
 
@@ -36,11 +36,12 @@ class Persistence(ABC):
     def save(self, content: str):
         pass
 
+
 class SaveToFile(Persistence):
 
-    def __init__(self, path:str):
+    def __init__(self, path: str):
         self.path = path
-        
+
     def save(self, content: str):
         try:
             with open(self.path, "w") as f:
@@ -51,6 +52,7 @@ class SaveToFile(Persistence):
             print(f"Error: {e}")
             raise
 
+
 class SaveToDB(Persistence):
     def save(self, content: str) -> None:
         # Implement properly
@@ -58,14 +60,14 @@ class SaveToDB(Persistence):
 
 
 class Document:
-    def __init__(self, title:str = "Untitled"):
+    def __init__(self, title: str = "Untitled"):
         self.title = title
         self._elements: list[DocumentElement] = []
 
     def add_element(self, element: DocumentElement):
         if not isinstance(element, DocumentElement):
             raise TypeError(f"{element} is not a type of DocumentELement")
-        
+
         self._elements.append(element)
 
     def get_elements(self) -> list[DocumentElement]:
@@ -73,8 +75,8 @@ class Document:
 
 
 class DocumentRenderer:
- 
-    def render(self , elements:list[DocumentElement]) -> str:
+
+    def render(self, elements: list[DocumentElement]) -> str:
         result = "".join(element.render() for element in elements)
 
         return result
@@ -94,12 +96,10 @@ class DocumentEditor:
         self.document.add_element(NewLineElement())
 
 
-class DocumentService:  
-    def __init__(self,  
-        document: Document,
-        renderer: DocumentRenderer,
-        persistence: Persistence
-        ):
+class DocumentService:
+    def __init__(
+        self, document: Document, renderer: DocumentRenderer, persistence: Persistence
+    ):
 
         self.document = document
         self.renderer = renderer
@@ -110,6 +110,23 @@ class DocumentService:
         content = self.renderer.render(elements)
         self.persistence.save(content)
 
-if __name__ == "__main__":
 
-  
+if __name__ == "__main__":
+    document = Document("Document No.1")
+    document_editor = DocumentEditor(document)
+
+    document_editor.add_text("Hello World")
+    document_editor.add_new_line()
+    document_editor.add_image("profile1.png")
+    document_editor.add_new_line()
+    document_editor.add_text("this is python programming.")
+
+    doc_render = DocumentRenderer()
+    file_obj = SaveToFile("document.txt")
+    document_service = DocumentService(document, doc_render, file_obj)
+
+    elements = document.get_elements()
+    data = doc_render.render(elements=elements)
+    print(data)
+
+    document_service.save_document()
