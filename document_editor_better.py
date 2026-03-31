@@ -84,5 +84,22 @@ class DocumentEditor:
     def add_image(self, path: str):
         self.doc.add_element(ImageElement(path))
 
+    def add_new_line(self):
+        self.doc.add_element(NewLineELement())
+
     def save(self, content: str):
         self.db.save(content)
+
+
+if __name__ == "__main__":
+    doc_obj = Document()
+    file_obj = SaveToFile()
+
+    doc_editor = DocumentEditor(doc_obj, file_obj)
+    doc_editor.add_text("Hello world")
+    doc_editor.add_new_line()
+    doc_editor.add_image("profile.png")
+    doc_editor.add_new_line()
+    doc_editor.add_text("I love python programming.")
+
+    
