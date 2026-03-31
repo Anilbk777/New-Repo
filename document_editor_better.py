@@ -18,6 +18,20 @@ class ImageElement(DocumentElement):
     def render(self):
         pass
 
+class Persistance(ABC):
+    @abstractmethod
+    def save(self):
+        pass
+
+class SaveToFile(Persistance):
+    def save(self,content:str):
+        with open("document.txt", "w") as f:
+            f.write(content)
+        
+class SaveToDB(Persistance):
+    def save(self):
+        print("save to my database.")
+
 class Document:
     def __init__(self):
         self.elements:list[DocumentElement] = []
@@ -37,3 +51,5 @@ class DocumentRender:
         elements= self.doc.get_element()
         for  element in elements:
             print(element.render())
+
+
